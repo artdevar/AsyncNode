@@ -15,17 +15,17 @@ public:
 
   ATargetCharacter();
 
-  UFUNCTION(BlueprintCallable, BlueprintPure)
+  UFUNCTION(BlueprintPure, Category="Checkpoint")
   bool IsCheckpointReached() const;
 
 public:
 
-  UPROPERTY(BlueprintAssignable)
+  UPROPERTY(BlueprintAssignable, Category="Checkpoint")
   FCheckpointReachedSignature OnCheckpointReached;
 
 protected: 
 
-  UFUNCTION(BlueprintCallable)
+  UFUNCTION(BlueprintCallable, Category="Checkpoint")
   void SetCheckpointReached(bool IsReached);
 
 protected: 

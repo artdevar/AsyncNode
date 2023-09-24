@@ -11,7 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForValueChangedOutputPin, bool,
 UCLASS()
 class ASYNCNODE_API UAsyncValueListener : public UBlueprintAsyncActionBase
 {
-	GENERATED_BODY()
+  GENERATED_BODY()
 
 public:
 
@@ -33,7 +33,7 @@ protected:
   void OnWaitedValueChanged(bool Value);
 
   UFUNCTION()
-  void OnListenerDestroyed(AActor * Listener);
+  void OnActorDestroyed(AActor * Actor);
 
 protected:
 
