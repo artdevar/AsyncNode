@@ -1,4 +1,4 @@
-# AsyncNode
+# AsyncNode (Unreal Engine 5)
 
-Here are target and listener actors. Listener is listening for boolean target's actor change its value using async node and destroys itself if the value is true.
-Value is true, when target actor stands in a checkpoint.
+Here are the target and listener actors. The listener is listening for a boolean target's actor to change its value using an async node and destroys itself if the value is true.
+Value is true when the target actor stands at a checkpoint.
