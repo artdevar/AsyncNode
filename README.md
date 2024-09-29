@@ -1,6 +1,6 @@
 # AsyncNode (Unreal Engine 5.4)
 
-Here are the listener actor and checkpoint. The listener actor is waiting for an event from the checkpoint asynchronous. When the checkpoint is triggered, the listener actor is destroyed. Everything is replicated.
+Here are the listener actor and checkpoint. The listener actor is waiting for an event from the checkpoint asynchronous (via UBlueprintAsyncActionBase). When the checkpoint is triggered, the listener actor is destroyed. Everything is replicated.
 
 [How it looks.](https://youtu.be/BfSuPMV5oZI?si=1DFVXuMLUAJ6wqiW)
 
