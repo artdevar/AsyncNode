@@ -4,9 +4,10 @@
 #include "Kismet/BlueprintAsyncActionBase.h"
 #include "AsyncValueListener.generated.h"
 
-class ATargetCharacter;
+class AListener;
+class ACheckpoint;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitForValueChangedOutputPin, bool, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReachedEventFired);
 
 UCLASS()
 class ASYNCNODE_API UAsyncValueListener : public UBlueprintAsyncActionBase
@@ -15,28 +16,22 @@ class ASYNCNODE_API UAsyncValueListener : public UBlueprintAsyncActionBase
 
 public:
 
-  UAsyncValueListener(const FObjectInitializer & ObjectInitializer = FObjectInitializer::Get());
-
-  void Activate() override;
-
-  UFUNCTION(BlueprintCallable, Category="Async", Meta=(DefaultToSelf="ListenerActor", BlueprintInternalUseOnly="true", WorldContext="WorldContextObject"))
-  static UAsyncValueListener * WaitForBooleanChange(AActor * ListenerActor, AActor * TargetActor);
-
-public:
+  UFUNCTION(BlueprintCallable, Category="Async", Meta=(DefaultToSelf="Listener", BlueprintInternalUseOnly="true", WorldContext="WorldContextObject"))
+  static UAsyncValueListener * WaitForCheckpointReached(ACheckpoint * Checkpoint, AListener * Listener);
 
   UPROPERTY(BlueprintAssignable)
-  FWaitForValueChangedOutputPin OnValueChanged;
+  FOnCheckpointReachedEventFired OnCheckpointReached;
 
 protected:
-
-  UFUNCTION()
-  void OnWaitedValueChanged(bool Value);
 
   UFUNCTION()
   void OnActorDestroyed(AActor * Actor);
 
+  UFUNCTION()
+  void OnCheckpointReachedEvent();
+
 protected:
 
-  ATargetCharacter * m_TargetActor;
-  AActor *           m_ListenerActor;
+  ACheckpoint * Checkpoint = nullptr;
+
 };
