@@ -6,17 +6,27 @@ UAsyncValueListener * UAsyncValueListener::WaitForCheckpointReached(ACheckpoint 
 {
   UAsyncValueListener * BlueprintNode = NewObject<UAsyncValueListener>();
   BlueprintNode->Checkpoint = Checkpoint;
-  BlueprintNode->RegisterWithGameInstance(Listener);
-  Listener->OnDestroyed.AddDynamic(BlueprintNode, &UAsyncValueListener::OnActorDestroyed);
-  Checkpoint->OnCheckpointReached.AddDynamic(BlueprintNode, &UAsyncValueListener::OnCheckpointReachedEvent);
-
+  BlueprintNode->Listener   = Listener;
   return BlueprintNode;
 }
 
-void UAsyncValueListener::OnActorDestroyed(AActor * Actor)
+void UAsyncValueListener::Activate()
+{
+  Super::Activate();
+
+  ensure(Checkpoint.IsValid());
+  ensure(Listener.IsValid());
+
+  Listener->OnDestroyed.AddDynamic(this, &UAsyncValueListener::OnListenerDestroyed);
+  Checkpoint->OnCheckpointReached.AddDynamic(this, &UAsyncValueListener::OnCheckpointReachedEvent);
+
+  RegisterWithGameInstance(Listener.Get());
+}
+
+void UAsyncValueListener::OnListenerDestroyed(AActor * DestroyedActor)
 {
   Checkpoint->OnCheckpointReached.RemoveDynamic(this, &UAsyncValueListener::OnCheckpointReachedEvent);
-  Checkpoint = nullptr;
+  Checkpoint.Reset();
 
   SetReadyToDestroy();
 }

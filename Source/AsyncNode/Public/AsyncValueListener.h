@@ -19,19 +19,22 @@ public:
   UFUNCTION(BlueprintCallable, Category="Async", Meta=(DefaultToSelf="Listener", BlueprintInternalUseOnly="true", WorldContext="WorldContextObject"))
   static UAsyncValueListener * WaitForCheckpointReached(ACheckpoint * Checkpoint, AListener * Listener);
 
+  void Activate() override;
+
+protected:
+
+  UFUNCTION()
+  void OnListenerDestroyed(AActor * DestroyedActor);
+
+  UFUNCTION()
+  void OnCheckpointReachedEvent();
+
   UPROPERTY(BlueprintAssignable)
   FOnCheckpointReachedEventFired OnCheckpointReached;
 
 protected:
 
-  UFUNCTION()
-  void OnActorDestroyed(AActor * Actor);
-
-  UFUNCTION()
-  void OnCheckpointReachedEvent();
-
-protected:
-
-  ACheckpoint * Checkpoint = nullptr;
+  TWeakObjectPtr<AListener>   Listener;
+  TWeakObjectPtr<ACheckpoint> Checkpoint;
 
 };
